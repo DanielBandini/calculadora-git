@@ -47,3 +47,39 @@ keys.addEventListener('click', (event) => {
   if (button.dataset.action) handleAction(button.dataset.action);
   else inputValue(button.dataset.value);
 });
+
+ // Suporte ao teclado físico - Issue #1
+document.addEventListener('keydown', (event) => {
+  const key = event.key;
+
+  // Números de 0 a 9
+  if (/^[0-9]$/.test(key)) {
+    inputValue(key);
+    return;
+  }
+
+  // Operadores e ponto decimal
+  if (['+', '-', '*', '/', '.'].includes(key)) {
+    inputValue(key);
+    return;
+  }
+
+  // Enter ou igual para calcular
+  if (key === 'Enter' || key === '=') {
+    event.preventDefault();
+    handleAction('equals');
+    return;
+  }
+
+  // Backspace para apagar
+  if (key === 'Backspace') {
+    event.preventDefault();
+    handleAction('backspace');
+    return;
+  }
+
+  // Escape para limpar
+  if (key === 'Escape') {
+    handleAction('clear');
+  }
+});
